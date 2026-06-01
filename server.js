@@ -9,11 +9,18 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const API_URL = process.env.VITE_API_URL || 'https://chimpsweep-backend.onrender.com';
 
-// Proxy API calls to backend
+// Proxy API calls to backend - MUST come before static files
 app.use('/api', createProxyMiddleware({
   target: API_URL,
   changeOrigin: true,
   secure: false,
+  onProxyReq: (proxyReq, req, res) => {
+    console.log(`Proxying ${req.method} ${req.path} -> ${API_URL}/api${req.path}`);
+  },
+  onError: (err, req, res) => {
+    console.error('Proxy error:', err.message);
+    res.status(502).json({ error: 'Proxy failed' });
+  }
 }));
 
 // Serve static files from the dist folder
