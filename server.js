@@ -9,8 +9,8 @@ const PORT = process.env.PORT || 3000;
 const API_URL = process.env.VITE_API_URL || 'https://chimpsweep-backend.onrender.com';
 
 // Handle auth callbacks - redirect browser to proper frontend routes
+// IMPORTANT: These must come BEFORE static middleware
 app.get('/auth/callback', (req, res) => {
-  // Mailchimp redirects here, redirect to success page
   res.redirect('/auth/success?' + req.url.split('?')[1]);
 });
 
@@ -23,19 +23,21 @@ app.get('/auth/error', (req, res) => {
 });
 
 // Simple proxy for /api/* -> backend
+// IMPORTANT: This must come AFTER auth routes but BEFORE static middleware
 app.use('/api', async (req, res) => {
   try {
     const targetUrl = `${API_URL}/api${req.path}${req.url.includes('?') ? req.url.substring(req.url.indexOf('?')) : ''}`;
     console.log(`Proxy: ${req.method} ${req.path}${req.url.includes('?') ? req.url.substring(req.url.indexOf('?')) : ''} -> ${targetUrl}`);
     
+    const headers = { ...req.headers };
+    // Fix the host header for the backend
+    headers.host = new URL(API_URL).host;
+    // Remove headers that shouldn't be forwarded
+    delete headers['content-length'];
+    
     const response = await fetch(targetUrl, {
       method: req.method,
-      headers: {
-        'Content-Type': 'application/json',
-        ...req.headers,
-        host: new URL(API_URL).host,
-      },
-      body: ['POST', 'PUT', 'PATCH'].includes(req.method) ? req : undefined,
+      headers,
       redirect: 'manual',
     });
     
