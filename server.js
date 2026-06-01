@@ -14,7 +14,6 @@ app.use('/api', createProxyMiddleware({
   target: API_URL,
   changeOrigin: true,
   secure: false,
-  pathRewrite: { '^/api': '' },
 }));
 
 // Serve static files from the dist folder
