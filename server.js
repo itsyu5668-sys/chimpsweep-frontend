@@ -25,12 +25,13 @@ app.get('/auth/error', (req, res) => {
 // Simple proxy for /api/* -> backend
 app.use('/api', async (req, res) => {
   try {
-    const targetUrl = `${API_URL}/api${req.path}`;
-    console.log(`Proxy: ${req.method} ${req.path} -> ${targetUrl}`);
+    const targetUrl = `${API_URL}/api${req.path}${req.url.includes('?') ? req.url.substring(req.url.indexOf('?')) : ''}`;
+    console.log(`Proxy: ${req.method} ${req.path}${req.url.includes('?') ? req.url.substring(req.url.indexOf('?')) : ''} -> ${targetUrl}`);
     
     const response = await fetch(targetUrl, {
       method: req.method,
       headers: {
+        'Content-Type': 'application/json',
         ...req.headers,
         host: new URL(API_URL).host,
       },
@@ -38,19 +39,21 @@ app.use('/api', async (req, res) => {
       redirect: 'manual',
     });
     
-    // Handle redirects - when backend redirects to frontend, browser needs to navigate
+    // Handle redirects - when backend redirects to frontend, convert to relative URL
     if ([301, 302, 303, 307, 308].includes(response.status)) {
       const location = response.headers.get('location');
-      if (location && location.startsWith('https://chimpsweep-frontend.onrender.com')) {
-        // Redirect the browser to the location
-        const newPath = location.replace('https://chimpsweep-frontend.onrender.com', '');
-        console.log(`Redirecting to: ${newPath}`);
-        return res.redirect(response.status, newPath + (req.url.includes('?') ? req.url.substring(req.url.indexOf('?')) : ''));
+      if (location) {
+        // If redirecting to our frontend domain, convert to relative path
+        if (location.startsWith('https://chimpsweep-frontend.onrender.com')) {
+          const relativePath = location.replace('https://chimpsweep-frontend.onrender.com', '');
+          console.log(`Redirecting to: ${relativePath}`);
+          return res.redirect(302, relativePath);
+        }
+        // For external redirects, forward as-is
+        res.status(response.status);
+        res.setHeader('Location', location);
+        return res.end();
       }
-      // For external redirects (like Mailchimp), forward the redirect
-      res.status(response.status);
-      res.setHeader('Location', location);
-      return res.end();
     }
     
     // Forward the response
