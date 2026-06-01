@@ -11,7 +11,7 @@ const API_URL = process.env.VITE_API_URL || 'https://chimpsweep-backend.onrender
 // Simple proxy for /api/* -> backend
 app.use('/api', async (req, res) => {
   try {
-    const targetUrl = `${API_URL}${req.path}`;
+    const targetUrl = `${API_URL}/api${req.path}`;
     console.log(`Proxy: ${req.method} ${req.path} -> ${targetUrl}`);
     
     const response = await fetch(targetUrl, {
