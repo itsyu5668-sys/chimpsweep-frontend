@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  /* Font Family Mappings */
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-labil: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+  /* Colors - Amplemarket Design Token Mappings */
+  --color-midnight-ink: #241c15;
+  --color-canvas-white: #ffffff;
+  --color-surface-charcoal: #272625;
+  --color-muted-ash: #6d6c6b;
+  --color-whisper-gray: #f4f3ef;
+  --color-light-taupe: #ecebea;
+  --color-phoenix-orange: #ffe01b;
+  --color-cyan-glow: #ffe01b;
+  --color-deep-indigo: #241c15;
+  --color-petal-pink: #fbfaf7;
+  --color-mint-green: #b7efb2;
+  --color-canary-yellow: #ffe01b;
+  --color-subtle-lavender: #e2ddfd;
+  --color-midnight-violet: #2e2460;
+  --color-engagement-gold: #fbc768;
+  --color-leadgen-red: #e16540;
+  --color-intelligence-blue: #328efa;
+  --color-deliver-green: #47d096;
+
+  /* Border Radii */
+  --radius-cards: 12px;
+  --radius-icons: 12px;
+  --radius-badges: 12px;
+  --radius-images: 12px;
+  --radius-inputs: 12px;
+  --radius-buttons: 8px;
+
+  /* Shadows - Diluted, premium, tactile elevations */
+  --shadow-subtle: rgba(17, 17, 17, 0.05) 0px 0px 0px 1px inset;
+  --shadow-xl: rgba(17, 17, 17, 0.12) 0px 26px 60px -6px, rgba(17, 17, 17, 0.02) 0px 28px 28px -14px, rgba(17, 17, 17, 0.04) 0px 6px 6px -3px, rgba(17, 17, 17, 0.04) 0px 1px 1px -0.5px;
+  --shadow-sm: rgba(17, 17, 17, 0.02) 0px -6px 6px 0px, rgba(17, 17, 17, 0.01) 0px -23px 9px 0px;
+  --shadow-subtle-2: rgba(17, 17, 17, 0.05) 0px 0px 1px 0px, rgba(17, 17, 17, 0.04) 1px 1px 1px 0px, rgba(17, 17, 17, 0.03) 2px 3px 2px 0px, rgba(17, 17, 17, 0.01) 4px 4px 2px 0px;
+  --shadow-xl-2: rgba(25, 34, 35, 0.12) 0px 26px 60px -6px, rgba(25, 34, 35, 0.02) 0px 28px 28px -14px, rgba(25, 34, 35, 0.04) 0px 6px 6px -3px, rgba(25, 34, 35, 0.04) 0px 1px 1px -0.5px;
+  --shadow-subtle-3: rgba(17, 17, 17, 0.04) 0px 1px 2px 0px, rgba(17, 17, 17, 0.04) 0px 4px 8px 0px, rgba(17, 17, 17, 0.04) 0px 0px 1px 0px, rgba(17, 17, 17, 0.04) 0px 0px 1px 0px;
+}
+
+/* Custom Base layer styles if needed */
+@layer utilities {
+  .gradient-phoenix {
+    background: radial-gradient(386.06% 162.79% at -13.1926% -17.1008%, rgb(255, 224, 27) 0%, rgb(244, 243, 239) 26.1559%, rgb(255, 248, 224) 84.1533%);
+  }
+  
+  .gradient-cyan {
+    background: radial-gradient(80.17% 109.2% at 52.1169% 62.5363%, rgb(255, 224, 27) 0%, rgb(244, 243, 239) 35.282%, rgb(255, 248, 224) 96.5565%);
+  }
+  
+  /* Noise and grid overlay details */
+  .grid-accent {
+    background-image: radial-gradient(rgba(36, 28, 21, 0.04) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  
+  .gradient-bg {
+    position: absolute;
+    top: -10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 800px;
+    height: 600px;
+    background: radial-gradient(circle at 50% 50%, rgba(255, 224, 27, 0.12) 0%, rgba(244, 243, 239, 0.08) 50%, transparent 100%);
+    filter: blur(80px);
+    z-index: -1;
+  }
+}
+
+/* Base Body settings */
+body {
+  font-family: var(--font-sans);
+  color: #111111;
+  background-color: #ffffff;
+  overflow-x: hidden;
+}
+
+/* Custom Smooth Transitions */
+.page-transition-enter {
+  opacity: 0;
+  transform: translateY(10px);
+}
+.page-transition-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 300ms ease-out, transform 300ms ease-out;
+}
+

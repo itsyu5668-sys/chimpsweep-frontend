@@ -1,0 +1,6 @@
+{
+  "name": "ChimpSweep",
+  "description": "An interactive, high-fidelity newsletter email list cleaning platform that sweeps away invalid, bounced, and unsubscribed contacts to lower your Mailchimp monthly billing.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
