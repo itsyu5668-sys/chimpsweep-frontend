@@ -1,0 +1,15 @@
+services:
+  - type: web_service
+    name: chimpsweep-frontend
+    env: node
+    region: oregon
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm run start:server
+    repo: https://github.com/itsyu5668-sys/chimpsweep-frontend
+    branch: main
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: VITE_API_URL
+        value: https://chimpsweep-backend.onrender.com
