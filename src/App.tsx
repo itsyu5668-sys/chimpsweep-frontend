@@ -82,14 +82,27 @@ export default function App() {
   // and any direct navigation to /privacy, /terms, etc.
   const [route, setRoute] = useState<PageRoute>(() => {
     const path = window.location.pathname.replace(/^\//, '') || 'landing';
-    const knownRoutes: PageRoute[] = [
-      'landing', 'oauth_mailchimp', 'auth_success', 'auth_error',
-      'pricing', 'checkout', 'stripe_portal', 'dashboard', 'privacy', 'terms'
-    ];
-    if (knownRoutes.includes(path as PageRoute)) {
-      return path as PageRoute;
-    }
-    // Fallback: use localStorage if path is not a known route (e.g. running on / in dev)
+    // Map URL slugs to route names (e.g., 'auth/error' -> 'auth_error')
+    const pathToRoute: Record<string, PageRoute> = {
+      'landing': 'landing',
+      'oauth_mailchimp': 'oauth_mailchimp',
+      'auth_success': 'auth_success',
+      'auth_error': 'auth_error',
+      'auth/success': 'auth_success',
+      'auth/error': 'auth_error',
+      'pricing': 'pricing',
+      'checkout': 'checkout',
+      'stripe_portal': 'stripe_portal',
+      'dashboard': 'dashboard',
+      'privacy': 'privacy',
+      'terms': 'terms',
+    };
+    const mappedRoute = pathToRoute[path];
+    
+    // If URL matches a route, always use it (takes precedence over localStorage)
+    if (mappedRoute) return mappedRoute;
+    
+    // For other routes, check localStorage
     const token = localStorage.getItem('bs_token');
     const savedRoute = localStorage.getItem('bs_route');
     if (!token) return 'landing';
