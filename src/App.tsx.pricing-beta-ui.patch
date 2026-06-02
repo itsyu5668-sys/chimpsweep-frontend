@@ -1,0 +1,61 @@
+=== ADD TO PRICING PAGE (after plan cards, before 'Cancel anytime' text) ===
+
+{/* Beta invite code entry */}
+{!showBetaInput ? (
+  <p className="text-center text-xs text-muted-ash mt-4">
+    Have a beta invite code?{' '}
+    <button
+      onClick={() => setShowBetaInput(true)}
+      className="underline font-semibold hover:opacity-70 transition-opacity"
+    >
+      Click here
+    </button>
+  </p>
+) : (
+  <div className="mt-6 max-w-sm mx-auto flex flex-col items-center space-y-3">
+    <p className="text-sm font-semibold text-midnight-ink">Enter your beta invite code</p>
+    <input
+      type="text"
+      value={betaCode}
+      onChange={e => setBetaCode(e.target.value.toUpperCase())}
+      placeholder="BETA-XXXX-XXXX-XXXX-XXXX"
+      className="w-full border border-zinc-200 rounded-xl px-4 py-3 text-sm font-mono text-center tracking-widest focus:outline-none focus:ring-2 focus:ring-[#ffe01b]"
+    />
+    {betaError && (
+      <p className="text-xs text-rose-500 font-medium">{betaError}</p>
+    )}
+    <button
+      onClick={handleRedeemBeta}
+      disabled={betaLoading || !betaCode.trim()}
+      className="w-full bg-[#ffe01b] text-midnight-ink font-bold py-3 rounded-xl hover:opacity-90 transition-opacity disabled:opacity-50"
+    >
+      {betaLoading ? 'Activating...' : 'Activate Beta Access'}
+    </button>
+    <button
+      onClick={() => { setShowBetaInput(false); setBetaError(''); setBetaCode(''); }}
+      className="text-xs text-muted-ash underline"
+    >
+      Back to plans
+    </button>
+  </div>
+)}
+
+=== ADD TO DASHBOARD OVERVIEW TAB (at the very top, before Stats Block) ===
+
+{/* Beta expired banner */}
+{user.plan === 'free' && (
+  <div className="w-full bg-amber-50 border border-amber-200 rounded-2xl p-5 mb-6">
+    <p className="font-bold text-amber-800 text-sm mb-1">Your beta access has ended</p>
+    <p className="text-xs text-amber-700">
+      Thank you so much for being an early ChimpSweep beta tester — your feedback means everything to us.
+      Your 14-day beta trial is now over. To keep saving on your Mailchimp bill, choose a plan below.
+      As a thank you, use code <span className="font-mono font-bold">THANKYOU10</span> for 10% off your first month.
+    </p>
+    <button
+      onClick={() => setRoute('pricing')}
+      className="mt-3 bg-amber-800 text-white text-xs font-bold px-4 py-2 rounded-lg hover:opacity-90 transition-opacity"
+    >
+      See plans →
+    </button>
+  </div>
+)}
